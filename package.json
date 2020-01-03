@@ -8,5 +8,8 @@
     "watch": "tsc -w"
   },
   "keywords": [],
-  "author": ""
+  "author": "",
+  "dependencies": {
+    "@types/node": "^13.1.2"
+  }
 }
