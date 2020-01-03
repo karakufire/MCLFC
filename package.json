@@ -10,6 +10,8 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@types/node": "^13.1.2"
+    "@types/node": "^13.1.2",
+    "colors": "^1.4.0",
+    "commander": "^4.0.1"
   }
 }
