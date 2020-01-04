@@ -10,7 +10,10 @@
   "keywords": [],
   "author": "",
   "dependencies": {
+    "typescript": "^3.7.4",
     "@types/node": "^13.1.2",
+    "tsc": "^1.20150623.0",
+    "pkg": "^4.4.2",
     "colors": "^1.4.0",
     "commander": "^4.0.1"
   }
