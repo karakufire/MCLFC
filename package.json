@@ -2,7 +2,7 @@
   "name": "langdiff2",
   "version": "1.0.0",
   "description": "",
-  "main": "./build/index.js",
+  "main": "./build/langdiff.js",
   "scripts": {
     "build": "./node_modules/.bin/tsc",
     "watch": "./node_modules/.bin/tsc -w",

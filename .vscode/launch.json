@@ -15,6 +15,34 @@
             ],
             "preLaunchTask": "npm build",
             "internalConsoleOptions": "openOnSessionStart"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test",
+            "program": "${workspaceFolder}/test/${fileBasename}",
+            "cwd": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/build/**/*.js"
+            ],
+            "preLaunchTask": "npm build",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Langdiff arguments test",
+            "program": "${workspaceFolder}/src/langdiff.ts",
+            "cwd": "${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}/build/**/*.js"
+            ],
+            "args": [
+                "${workspaceFolder}/test/botania/en_us.lang",
+                "${workspaceFolder}/test/botania/ja_jp.lang"
+            ],
+            "preLaunchTask": "npm build",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
     ]
 }
