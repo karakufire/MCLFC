@@ -6,7 +6,7 @@
   "scripts": {
     "build": "./node_modules/.bin/tsc",
     "watch": "./node_modules/.bin/tsc -w",
-    "pkg": "./node_modules/.bin/pkg ./build/index.js -o ./dist/langdiff"
+    "pkg": "./node_modules/.bin/pkg ./build/src/langdiff.js -o ./dist/langdiff"
   },
   "keywords": [],
   "author": "",
