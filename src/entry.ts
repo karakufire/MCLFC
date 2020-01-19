@@ -1,24 +1,30 @@
 "use strict";
 
+import * as util from './util';
+
 const pattern = /^(?<!#)(.*?)(?==)(.*)$/g;
 const nl = /\r?\n|\r/g;
 
 /**
- * .property entry
+ * An entry of lang file.
  */
 export class Entry {
     readonly is_comment: boolean;
-    readonly contents: { tag: '#' | string; value: string; };
+    readonly tag: '#' | string;
+    readonly value: string;
     readonly line: number;
 
     constructor(tag: string, value: string, line: number) {
         this.is_comment = (tag === '#');
-        this.contents = { tag: tag, value: value };
+        this.tag = tag;
+        this.value = value;
         this.line = line;
     }
 
+    isEmpty() { return false; }
+
     toString() {
-        return `${this.line}: ${this.contents.tag}=${this.contents.value}`;
+        return `${this.line}: ${this.tag}=${this.value}`;
     }
 }
 
@@ -60,7 +66,8 @@ export class DiffLine {
     }
 
     get isDifferentLine() {
-        return this.l1 !== this.l2;
+        if (this.l1 >= 0 && this.l2 >= 0) return this.l1 !== this.l2;
+        else return false;
     }
 
     get hasEitherNullValue() {
@@ -68,7 +75,7 @@ export class DiffLine {
     }
 
     toString() {
-        return `${this.tag}\t${this.v1 || ''}\t${this.l1 >= 0 ? this.l1 : ''}\t${this.v2 || ''}\t${this.l2 >= 0 ? this.l2 : ''}`;
+        return `${this.tag}\t${this.v1 || ''}\t${this.l1 >= 0 ? this.l1 + 1 : ''}\t${this.v2 || ''}\t${this.l2 >= 0 ? this.l2 + 1 : ''}`;
     }
 }
 
@@ -82,13 +89,21 @@ export namespace Entry {
         toString() { return `${this.line}: `; }
     }
 
+    /**
+     * Parse to entries array from read file.
+     * @param content 
+     */
     export function parseToEntries(content: string) {
         let lines = content.split(nl);
         return lines.map(__parse_line__);
     }
 
+    /**
+     * Strip empty lines from entries array.
+     * @param contents 
+     */
     export function dropEmptyLines(contents: Entry[]) {
-        return contents.filter(n => !(n instanceof EmptyLine));
+        return contents.filter(n => !(n.isEmpty()));
     }
 
     function __parse_line__(line: string, lineof: number) {
@@ -103,11 +118,35 @@ export namespace Entry {
         } else return new EmptyLine(lineof);
     }
 
-    export function toRawText(data: Entry[]) {
+    function toRawText(data: Entry[]) {
         const digit = Math.max(...data.map(d => d.line)).toString().length;
         return data.map(d => `${('0'.repeat(digit) + d.line).slice(-digit)}:`
-            + ` ${d instanceof EmptyLine ? '' : `${d.contents.tag}=${d.contents.value}`}`
+            + ` ${d instanceof EmptyLine ? '' : `${d.tag}=${d.value}`}`
         ).join('\n');
     }
 
+}
+
+export namespace DiffLine {
+    /**
+     * Compare both of 2 entries arrays and generate DiffLine array.
+     * @param orig 
+     * @param trsl 
+     */
+    export function diff(orig: Entry[], trsl: Entry[]) {
+        return [...new Set([
+            ...orig.filter(e => !e.isEmpty()).filter(e => !e.is_comment).map(e => e.tag),
+            ...trsl.filter(e => !e.isEmpty()).filter(e => !e.is_comment).map(e => e.tag),
+        ])].map(tag => {
+            const or = orig.find(e => tag === e.tag);
+            const tr = trsl.find(e => tag === e.tag);
+
+            return new DiffLine(tag, {
+                v1: (or != null ? or.value : undefined),
+                l1: (or != null ? or.line : -1),
+                v2: (tr != null ? tr.value : undefined),
+                l2: (tr != null ? tr.line : -1),
+            });
+        });
+    }
 }
