@@ -13,7 +13,7 @@ const VERSION = '1.0.0';
 const title = 'langdiff - A tool of comparing two files both of minecraft lang files.';
 
 program.version(VERSION);
-program.arguments('<file1> <file2>');
+program.arguments('<original> <translated>');
 program.name();
 program.option('-o, --output <PATH>', 'set output file path');
 program.option('-d, --differences', 'outputs different lines, untranslated entries and no-in-original entries');
@@ -28,7 +28,7 @@ try {
 }
 
 function main() {
-    if (program.args.length < 2) throw new errors.NotEnoughArgs('Not Enough Args: Args must be 2.');
+    if (program.args.length < 2) throw new errors.NotEnoughArgs('Not Enough Args: Requires 2 args.');
 
     const path_origin = program.args[0];
     const path_trsltd = program.args[1];
