@@ -8,7 +8,7 @@ import * as col from 'colors/safe';
 import * as errors from './errors';
 import { Entry, DiffLine } from './entry';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 const title = 'langdiff - A tool of comparing two files both of minecraft lang files.';
 
