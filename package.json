@@ -1,12 +1,12 @@
 {
-  "name": "langdiff2",
+  "name": "mclfc",
   "version": "1.0.0",
   "description": "",
-  "main": "./build/langdiff.js",
+  "main": "./build/mclfc.js",
   "scripts": {
     "build": "./node_modules/.bin/tsc",
     "watch": "./node_modules/.bin/tsc -w",
-    "pkg": "./node_modules/.bin/pkg ./build/src/langdiff.js -o ./dist/langdiff"
+    "pkg": "./node_modules/.bin/pkg ./build/src/mclfc.js -o ./dist/mclfc"
   },
   "keywords": [],
   "author": "",
