@@ -1,4 +1,4 @@
-# langdiff2 - Helper of translating with lang files of minecraft
+# MCLFC - Minecraft Language File Comparator
 
 ## Install
 Do `npm install` will set development environment.
