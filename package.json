@@ -4,10 +4,11 @@
   "description": "",
   "main": "./build/mclfc.js",
   "scripts": {
+    "clean": "rimraf ./build ./dist",
     "build": "./node_modules/.bin/tsc",
     "watch": "./node_modules/.bin/tsc -w",
     "pkg": "pkg ./build/src/mclfc.js -o ./dist/mclfc",
-    "zip" : "mkdirp mclfc && cpx ./assets/readme.txt ./mclfc && cpx ./dist/mclfc.exe ./mclfc && bestzip ./dist/mclfc.zip ./mclfc && rimraf ./mclfc"
+    "zip": "mkdirp mclfc && cpx ./assets/readme.txt ./mclfc && cpx ./dist/mclfc.exe ./mclfc && bestzip ./dist/mclfc.zip ./mclfc && rimraf ./mclfc"
   },
   "keywords": [],
   "author": "",
