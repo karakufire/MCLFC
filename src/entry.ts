@@ -1,5 +1,7 @@
 "use strict";
 
+import * as path from 'path';
+
 import * as util from './util';
 
 const pattern = /^(?<!#)(.*?)(?==)(.*)$/g;
@@ -80,6 +82,15 @@ export class DiffLine {
 }
 
 export namespace Entry {
+
+    export function getParser(original_path: string, translated_path: string) {
+        if (path.extname(original_path) == path.extname(translated_path)) {
+            const extension = path.extname(original_path);
+            if (extension == '.lang') return parseFromProperties;
+            else if (extension == '.json') return parseFromJson;
+        }
+    }
+
     class EmptyLine extends Entry {
         constructor(line: number) {
             super('', '', line);
@@ -93,9 +104,22 @@ export namespace Entry {
      * Parse to entries array from read file.
      * @param content 
      */
-    export function parseToEntries(content: string) {
+    export function parseFromProperties(content: string) {
         let lines = content.split(nl);
-        return lines.map(__parse_line__);
+        return lines.map(__parse_line_prop__);
+    }
+
+    export function parseFromJson(content: string) {
+        const obj = JSON.parse(content);
+        const keys: string[] = Object.keys(obj);
+        const lines: string[] = content.split(nl);
+
+        return keys.map(e => {
+            const num = lines.findIndex(l => l.includes(e));
+            if (num < 0) return new EmptyLine(-1);
+            const value = obj[e];
+            return new Entry(e, value || '', num);
+        }).filter(e => !(e instanceof EmptyLine));
     }
 
     /**
@@ -106,7 +130,7 @@ export namespace Entry {
         return contents.filter(n => !(n.isEmpty()));
     }
 
-    function __parse_line__(line: string, lineof: number) {
+    function __parse_line_prop__(line: string, lineof: number) {
         const eq = line.indexOf('=');
         if (line.startsWith('#')) {
             const com = line.replace(/^# */, '');

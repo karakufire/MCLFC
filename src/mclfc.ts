@@ -7,6 +7,7 @@ import * as col from 'colors/safe';
 
 import * as errors from './errors';
 import { Entry, DiffLine } from './entry';
+import { parse } from 'path';
 
 const VERSION = '1.0.1';
 
@@ -36,11 +37,14 @@ function main() {
     if (!fs.existsSync(path_origin)) throw new errors.NoSuchFile(path_origin);
     if (!fs.existsSync(path_trsltd)) throw new errors.NoSuchFile(path_trsltd);
 
+    const parser = Entry.getParser(path_origin, path_trsltd);
+    if (parser == null) throw new Error('File format error!');
+
     const content_origin = fs.readFileSync(path_origin, 'utf-8');
     const content_trsltd = fs.readFileSync(path_trsltd, 'utf-8');
 
-    const entries_origin = Entry.dropEmptyLines(Entry.parseToEntries(content_origin)).filter(e => !e.is_comment);
-    const entries_trsltd = Entry.dropEmptyLines(Entry.parseToEntries(content_trsltd)).filter(e => !e.is_comment);
+    const entries_origin = Entry.dropEmptyLines(parser(content_origin)).filter(e => !e.is_comment);
+    const entries_trsltd = Entry.dropEmptyLines(parser(content_trsltd)).filter(e => !e.is_comment);
 
     let diffed = DiffLine.diff(entries_origin, entries_trsltd);
     if (program['differences']) {
