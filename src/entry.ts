@@ -110,7 +110,7 @@ export namespace Entry {
     }
 
     export function parseFromJson(content: string) {
-        const obj = JSON.parse(content);
+        const obj = JSON.parse(content, (k, v) => typeof v === "string" ? JSON.stringify(v).replace("//", "////") : v);
         const keys: string[] = Object.keys(obj);
         const lines: string[] = content.split(nl);
 
