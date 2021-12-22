@@ -13,15 +13,15 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@types/node": "^13.1.2",
+    "@types/node": "^13.13.52",
     "bestzip": "^2.1.7",
     "colors": "^1.4.0",
-    "commander": "^4.0.1",
+    "commander": "^4.1.1",
     "cpx": "^1.5.0",
-    "mkdirp": "^1.0.3",
-    "pkg": "^4.4.2",
+    "mkdirp": "^1.0.4",
+    "pkg": "^4.5.1",
     "rimraf": "^3.0.2",
     "tsc": "^1.20150623.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.9.10"
   }
 }
